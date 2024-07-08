@@ -9,7 +9,7 @@ namespace TranslationManagement.Api.Test
     public class TranslationJobControllerTest
     {
         [Fact]
-        public void GetJobs_All_ReturnAllJobs()
+        public async Task GetJobs_All_ReturnAllJobs()
         {
             var mockTranslationJobs = new List<TranslationJob>();
             for (int i = 0; i < 10; i++)
@@ -22,20 +22,20 @@ namespace TranslationManagement.Api.Test
             }
 
             var mockRepository = new Mock<IRepository>();
-            mockRepository.Setup(x => x.GetJobs()).
-                Returns(() => mockTranslationJobs.AsEnumerable());
+             mockRepository.Setup(x => x.GetJobsAsync()).
+                ReturnsAsync(mockTranslationJobs.AsEnumerable());
 
 
             var translationJobController = new TranslationJobController(mockRepository.Object);
 
-            var result = translationJobController.GetJobs();
+            var result = await translationJobController.GetJobs();
 
             Assert.Equal(10, result.Count());
-            mockRepository.Verify(x => x.GetJobs(), Times.Once());
+            mockRepository.Verify(x => x.GetJobsAsync(), Times.Once());
         }
 
         [Fact]
-        public void UpdateJobStatus_ValidParameters_ReturnsTrue()
+        public async void UpdateJobStatus_ValidParameters_ReturnsTrue()
         {
             // Arrange
             var jobId = 1;
@@ -43,21 +43,21 @@ namespace TranslationManagement.Api.Test
             var newStatus = "Completed";
 
             var mockRepository = new Mock<IRepository>();
-            mockRepository.Setup(x => x.UpdateJobStatus(jobId, translatorId, newStatus))
-                .Returns(true);
+            mockRepository.Setup(x => x.UpdateJobStatusAsync(jobId, translatorId, newStatus))
+                .ReturnsAsync(true);
 
             var translationJobController = new TranslationJobController(mockRepository.Object);
 
             // Act
-            var result = translationJobController.UpdateJobStatus(jobId, translatorId, newStatus);
+            var result = await translationJobController.UpdateJobStatus(jobId, translatorId, newStatus);
 
             // Assert
             Assert.True(result);
-            mockRepository.Verify(x => x.UpdateJobStatus(jobId, translatorId, newStatus), Times.Once());
+            mockRepository.Verify(x => x.UpdateJobStatusAsync(jobId, translatorId, newStatus), Times.Once());
         }
 
         [Fact]
-        public void UpdateJobStatus_InvalidParameters_ReturnsFalse()
+        public async void UpdateJobStatus_InvalidParameters_ReturnsFalse()
         {
             // Arrange
             var jobId = 1;
@@ -65,17 +65,17 @@ namespace TranslationManagement.Api.Test
             var newStatus = "InvalidStatus";
 
             var mockRepository = new Mock<IRepository>();
-            mockRepository.Setup(x => x.UpdateJobStatus(jobId, translatorId, newStatus))
-                .Returns(false);
+            mockRepository.Setup(x => x.UpdateJobStatusAsync(jobId, translatorId, newStatus))
+                .ReturnsAsync(false);
 
             var translationJobController = new TranslationJobController(mockRepository.Object);
 
             // Act
-            var result = translationJobController.UpdateJobStatus(jobId, translatorId, newStatus);
+            var result = await translationJobController.UpdateJobStatus(jobId, translatorId, newStatus);
 
             // Assert
             Assert.False(result);
-            mockRepository.Verify(x => x.UpdateJobStatus(jobId, translatorId, newStatus), Times.Once());
+            mockRepository.Verify(x => x.UpdateJobStatusAsync(jobId, translatorId, newStatus), Times.Once());
         }
 
         [Fact]

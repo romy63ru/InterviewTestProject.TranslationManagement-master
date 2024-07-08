@@ -8,7 +8,7 @@ namespace TranslationManagement.Api.Test
     public class TranslatorManagementControllerTest
     {
         [Fact]
-        public void GetTranslators_ReturnsAllTranslators()
+        public async Task GetTranslators_ReturnsAllTranslators()
         {
             // Arrange
             var mockTranslators = new List<TranslatorModel>
@@ -19,19 +19,19 @@ namespace TranslationManagement.Api.Test
             };
 
             var mockRepository = new Mock<IRepository>();
-            mockRepository.Setup(x => x.GetTranslators()).Returns(mockTranslators);
+            mockRepository.Setup(x => x.GetTranslatorsAsync()).ReturnsAsync(mockTranslators);
 
             var translatorManagementController = new TranslatorManagementController(mockRepository.Object);
 
             // Act
-            var result = translatorManagementController.GetTranslators();
+            var result = await translatorManagementController.GetTranslators();
 
             // Assert
             Assert.Equal(mockTranslators, result);
         }
 
         [Fact]
-        public void GetTranslatorsByName_ValidName_ReturnsTranslators()
+        public async Task GetTranslatorsByName_ValidName_ReturnsTranslators()
         {
             // Arrange
             var name = "Translator 1";
@@ -42,12 +42,12 @@ namespace TranslationManagement.Api.Test
             };
 
             var mockRepository = new Mock<IRepository>();
-            mockRepository.Setup(x => x.GetTranslatorsByName(name)).Returns(mockTranslators);
+            mockRepository.Setup(x => x.GetTranslatorsByNameAsync(name)).ReturnsAsync(mockTranslators);
 
             var translatorManagementController = new TranslatorManagementController(mockRepository.Object);
 
             // Act
-            var result = translatorManagementController.GetTranslatorsByName(name);
+            var result = await translatorManagementController.GetTranslatorsByName(name);
 
             // Assert
             Assert.IsType<OkObjectResult>(result);
@@ -67,7 +67,7 @@ namespace TranslationManagement.Api.Test
             };
 
             var mockRepository = new Mock<IRepository>();
-            mockRepository.Setup(x => x.GetTranslatorsByName(name)).Returns(new List<TranslatorModel>());
+            mockRepository.Setup(x => x.GetTranslatorsByNameAsync(name)).ReturnsAsync(new List<TranslatorModel>());
 
             var translatorManagementController = new TranslatorManagementController(mockRepository.Object);
 
@@ -100,14 +100,14 @@ namespace TranslationManagement.Api.Test
         }
 
         [Fact]
-        public void UpdateTranslatorStatus_ValidParameters_ReturnsOk()
+        public async void UpdateTranslatorStatus_ValidParameters_ReturnsOk()
         {
             // Arrange
             var translatorId = 1;
             var newStatus = "Active";
 
             var mockRepository = new Mock<IRepository>();
-            mockRepository.Setup(x => x.UpdateTranslatorStatus(translatorId, newStatus)).Returns(true);
+            mockRepository.Setup(x => x.UpdateTranslatorStatusAsync(translatorId, newStatus)).ReturnsAsync(true);
 
             var translatorManagementController = new TranslatorManagementController(mockRepository.Object);
 
@@ -119,14 +119,14 @@ namespace TranslationManagement.Api.Test
         }
 
         [Fact]
-        public void UpdateTranslatorStatus_InvalidParameters_ReturnsBadRequest()
+        public async void  UpdateTranslatorStatus_InvalidParameters_ReturnsBadRequest()
         {
             // Arrange
             var translatorId = 1;
             var newStatus = "InvalidStatus";
 
             var mockRepository = new Mock<IRepository>();
-            mockRepository.Setup(x => x.UpdateTranslatorStatus(translatorId, newStatus)).Returns(false);
+            mockRepository.Setup(x => x.UpdateTranslatorStatusAsync(translatorId, newStatus)).ReturnsAsync(false);
 
             var translatorManagementController = new TranslatorManagementController(mockRepository.Object);
 
