@@ -57,7 +57,7 @@ Frontend:
 
 ```bash
 cd src/frontend
-npm restore
+npm install
 npm build 
 npm start
 ```
