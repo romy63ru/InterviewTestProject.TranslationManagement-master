@@ -18,15 +18,15 @@ namespace TranslationManagement.Api.Controlers
         }
 
         [HttpGet]
-        public IEnumerable<TranslatorModel> GetTranslators()
+        public async Task<IEnumerable<TranslatorModel>> GetTranslators()
         {
-            return _repository.GetTranslators();
+            return await _repository.GetTranslatorsAsync();
         }
 
         [HttpGet]
-        public IActionResult GetTranslatorsByName(string name)
+        public async Task<IActionResult> GetTranslatorsByName(string name)
         {
-            var result =  _repository.GetTranslatorsByName(name);
+            var result = await _repository.GetTranslatorsByNameAsync(name);
             if (result.Any())
             {
                 return Ok(result);
@@ -45,9 +45,9 @@ namespace TranslationManagement.Api.Controlers
         }
 
         [HttpPost]
-        public IActionResult UpdateTranslatorStatus(int Translator, string newStatus = "")
+        public async Task<IActionResult> UpdateTranslatorStatus(int Translator, string newStatus = "")
         {
-            var result  = _repository.UpdateTranslatorStatus(Translator, newStatus);
+            var result  = await _repository.UpdateTranslatorStatusAsync(Translator, newStatus);
             if(result)
             {
                 return Ok();
