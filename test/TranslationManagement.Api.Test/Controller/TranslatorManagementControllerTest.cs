@@ -56,7 +56,7 @@ namespace TranslationManagement.Api.Test
         }
 
         [Fact]
-        public void GetTranslatorsByName_InvalidName_ReturnsNotFound()
+        public async void GetTranslatorsByName_InvalidName_ReturnsNotFound()
         {
             // Arrange
             var name = "Translator 3";
@@ -72,7 +72,7 @@ namespace TranslationManagement.Api.Test
             var translatorManagementController = new TranslatorManagementController(mockRepository.Object);
 
             // Act
-            var result = translatorManagementController.GetTranslatorsByName(name);
+            var result = await translatorManagementController.GetTranslatorsByName(name);
 
             // Assert
             Assert.IsType<NotFoundResult>(result);
@@ -112,7 +112,7 @@ namespace TranslationManagement.Api.Test
             var translatorManagementController = new TranslatorManagementController(mockRepository.Object);
 
             // Act
-            var result = translatorManagementController.UpdateTranslatorStatus(translatorId, newStatus);
+            var result = await translatorManagementController.UpdateTranslatorStatus(translatorId, newStatus);
 
             // Assert
             Assert.IsType<OkResult>(result);
@@ -131,7 +131,7 @@ namespace TranslationManagement.Api.Test
             var translatorManagementController = new TranslatorManagementController(mockRepository.Object);
 
             // Act
-            var result = translatorManagementController.UpdateTranslatorStatus(translatorId, newStatus);
+            var result = await translatorManagementController.UpdateTranslatorStatus(translatorId, newStatus);
 
             // Assert
             Assert.IsType<BadRequestResult>(result);
