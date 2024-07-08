@@ -11,9 +11,13 @@ namespace TranslationManagement.Api
         {
             var host = CreateHostBuilder(args).Build();
 
-            // automatic startup database migration
-            var scope = host.Services.GetService<IServiceScopeFactory>().CreateScope();
-            scope.ServiceProvider.GetRequiredService<AppDbContext>().Database.Migrate();
+            // Automatic startup database migration
+            using (var scope = host.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
+                var dbContext = services.GetRequiredService<AppDbContext>();
+                dbContext.Database.Migrate();
+            }
 
             host.Run();
         }
@@ -25,4 +29,5 @@ namespace TranslationManagement.Api
                     webBuilder.UseStartup<Startup>();
                 });
     }
+
 }

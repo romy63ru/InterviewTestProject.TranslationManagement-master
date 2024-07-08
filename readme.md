@@ -41,3 +41,24 @@ Our tools of choice are React (CRA) + Typescript but use what you prefer
 Clone/fork to your repo and deliver as a link to your repo or share the `git-archive`. 
 Commit to master, follow usual git culture. 
 Please include a note regarding how to run.
+
+
+# Build and run solution
+
+
+Backend:
+```bash
+cd src/TranslationManagement.Api/ 
+dotnet build
+dotnet run
+```
+
+Frontend:
+
+```bash
+cd src/frontend
+npm restore
+npm build 
+npm start
+```
+
