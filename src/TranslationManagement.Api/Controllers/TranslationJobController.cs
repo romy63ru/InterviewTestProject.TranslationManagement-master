@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TranslationManagement.Api.Interfaces;
@@ -8,6 +7,7 @@ using TranslationManagement.Api.Interfaces;
 namespace TranslationManagement.Api.Controllers
 {
     [ApiController]
+    [Produces("application/json")]
     [Route("api/jobs/[action]")]
     public class TranslationJobController : ControllerBase
     {

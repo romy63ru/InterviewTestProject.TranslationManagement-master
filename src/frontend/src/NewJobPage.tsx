@@ -1,6 +1,8 @@
+import React from "react";
 import { useForm } from "react-hook-form";
 import { Page } from "./Page";
-import {
+import { createJob } from "./Data";
+import { 
   FieldContainer,
   FieldInput,
   FieldLabel,
@@ -11,42 +13,24 @@ import {
   SubmissionSuccess,
 } from "./Styles";
 import { TranslationJob, TranslationJobImpl } from "./TranslationJob";
-import { createJob } from "./Data";
-import React from "react";
 
-export const NewJobPage = () => {
-  const [successfullySubmitted, setSuccessfullySubmitted] =
-    React.useState(false);
+const NewJobPage = () => {
+  const [successfullySubmitted, setSuccessfullySubmitted] = React.useState(false);
 
-  const { handleSubmit, formState } = useForm<TranslationJobImpl>({
+  const { handleSubmit, formState, register } = useForm<TranslationJobImpl>({
     mode: "onBlur",
   });
 
   const submitForm = async (data: TranslationJob) => {
     const result = await createJob(data);
-    setSuccessfullySubmitted(result ? true : false);
+    setSuccessfullySubmitted(!!result);
   };
 
   return (
     <Page title="Add new job">
       <form onSubmit={handleSubmit(submitForm)}>
         <Fieldset disabled={formState.isSubmitting || successfullySubmitted}>
-          <FieldContainer>
-            <FieldLabel htmlFor="title">Customer name</FieldLabel>
-            <FieldInput id="customerName" name="customerName" type="text" />
-          </FieldContainer>
-          <FieldContainer>
-            <FieldLabel htmlFor="content">Original Content</FieldLabel>
-            <FieldTextArea id="originalContent" name="originalContent" />
-          </FieldContainer>
-          <FieldContainer>
-            <FieldLabel htmlFor="content">Translated Content</FieldLabel>
-            <FieldTextArea id="translatedContent" name="translatedContent" />
-          </FieldContainer>
-          <FieldContainer>
-            <FieldLabel htmlFor="title">Price</FieldLabel>
-            <FieldInput id="price" name="price" type="text" />
-          </FieldContainer>
+          <FormFields register={register} />
           <FormButtonContainer>
             <PrimaryButton type="submit">Submit Your Job</PrimaryButton>
           </FormButtonContainer>
@@ -60,5 +44,26 @@ export const NewJobPage = () => {
     </Page>
   );
 };
+
+const FormFields = ({ register }) => (
+  <>
+    <FieldContainer>
+      <FieldLabel htmlFor="customerName">Customer name</FieldLabel>
+      <FieldInput id="customerName" name="customerName" type="text" {...register("customerName")} />
+    </FieldContainer>
+    <FieldContainer>
+      <FieldLabel htmlFor="originalContent">Original Content</FieldLabel>
+      <FieldTextArea id="originalContent" name="originalContent" {...register("originalContent")} />
+    </FieldContainer>
+    <FieldContainer>
+      <FieldLabel htmlFor="translatedContent">Translated Content</FieldLabel>
+      <FieldTextArea id="translatedContent" name="translatedContent" {...register("translatedContent")} />
+    </FieldContainer>
+    <FieldContainer>
+      <FieldLabel htmlFor="price">Price</FieldLabel>
+      <FieldInput id="price" name="price" type="text" {...register("price")} />
+    </FieldContainer>
+  </>
+);
 
 export default NewJobPage;
